@@ -1,0 +1,29 @@
+# Credenciais e configurações privadas
+*.json
+.env
+.env.*
+credentials/
+secrets/
+profiles.yml
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# dbt
+dbt_olist/target/
+dbt_olist/logs/
+dbt_olist/dbt_packages/
+
+# Airflow
+airflow/logs/
+airflow/config/airflow.cfg
+airflow/plugins/__pycache__/
+
+# Dados locais
+data/raw/
+*.csv
+
+# Power BI temporário
+*.tmp
