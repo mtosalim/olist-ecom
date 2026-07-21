@@ -1,0 +1,16 @@
+
+
+CREATE DATABASE OlistEcom;
+GO
+
+USE OlistEcom;
+GO
+
+CREATE SCHEMA bronze;
+GO
+
+CREATE SCHEMA silver;
+GO
+
+CREATE SCHEMA gold;
+GO
