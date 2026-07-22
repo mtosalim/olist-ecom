@@ -1,0 +1,38 @@
+==================== 2026-07-21T21:41:04.892618Z | 019f86a0-10fa-7123-966c-330dddfa6193 ====================
+21:41:04.892759 [info ]: Installing dbt project and profile setup
+21:41:04.914029 [info ]: Info Created .vscode/extensions.json with dbt extension recommendation
+21:41:04.914245 [info ]: Success Project created successfully!
+21:41:04.914384 [info ]: Info Project name: dbt_olist
+21:41:04.914456 [info ]: Info Project directory: dbt_olist
+21:41:04.914552 [info ]: Info Setting up your profile...
+21:41:04.914913 [info ]: Loading ~/.dbt/profiles.yml
+21:41:04.915568 [info ]: Info Creating new profile...
+21:41:07.051375 [info ]: No dbt_cloud.yml found - proceeding without cloud pre-population
+21:41:22.161403 [info ]: Success Profile written to C:\Users\mathe\.dbt\profiles.yml
+21:41:22.161544 [info ]: Validating profile inputs, adapters, and connection
+
+21:41:22.161631 [info ]: dbt-fusion 2.0.0-preview.200
+21:41:22.161869 [info ]: Started loading project
+21:41:22.162993 [info ]: Loading ~/.dbt/profiles.yml
+21:41:22.168558 [info ]: Finished loading project [  0.01s]
+21:41:22.168716 [info ]: Started debugging
+21:41:22.168802 [info ]: Debugging profile: dev
+21:41:22.168892 [info ]: Debugging dbt version: 2.0.0-preview.200
+21:41:22.168985 [info ]: Debugging platform: windows x86_64 (windows)
+21:41:22.169072 [info ]: Debugging adapter type: bigquery (remote)
+21:41:22.205743 [info ]: Debugging dependencies:
+  git: OK
+21:41:22.206042 [info ]: Debugging connection:
+  "database": "olist-ecom-503120",
+  "schema": "olist_silver",
+  "method": "oauth",
+  "location": "US",
+  "dataproc_batch": null
+21:41:25.865746 [debug]: Query executed on node unknown:
+select 1 as id
+21:41:25.865852 [info ]: Debugging connection test: OK
+21:41:25.866133 [info ]: Debugged All checks passed!
+21:41:25.866361 [info ]: Finished debugging [  3.70s]
+21:41:26.475503 [info ]: 
+==================== Execution Summary =====================
+Finished 'init' successfully for target 'dev' [21.6s]

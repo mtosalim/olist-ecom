@@ -1,0 +1,22 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Environment variables
+.env
+
+# Google credentials
+*.json
+
+# dbt
+dbt_olist/target/
+dbt_olist/logs/
+dbt_olist/dbt_packages/
+
+# VS Code
+.vscode/
+
+# Data
+data/raw/
+*.csv
