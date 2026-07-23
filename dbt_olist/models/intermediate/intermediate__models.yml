@@ -78,3 +78,60 @@ models:
           vencedora de cidade e estado para o prefixo de CEP.
         data_tests:
           - not_null
+  
+  - name: int_order_items__aggregated
+    description: >
+      Agrega os itens de pedido no grão de uma linha por pedido, consolidando
+      quantidades de itens, produtos e vendedores, além dos valores de produtos,
+      frete e valor total.
+
+    columns:
+      - name: order_id
+        description: Identificador único do pedido.
+        data_tests:
+          - not_null
+          - unique
+
+      - name: order_item_count
+        description: Quantidade de itens registrados no pedido.
+        data_tests:
+          - not_null
+
+      - name: distinct_product_count
+        description: Quantidade de produtos distintos presentes no pedido.
+        data_tests:
+          - not_null
+
+      - name: distinct_seller_count
+        description: Quantidade de vendedores distintos presentes no pedido.
+        data_tests:
+          - not_null
+
+      - name: total_product_value
+        description: Soma dos preços de todos os itens do pedido.
+        data_tests:
+          - not_null
+
+      - name: total_freight_value
+        description: Soma dos valores de frete de todos os itens do pedido.
+        data_tests:
+          - not_null
+
+      - name: total_order_item_value
+        description: Soma do valor dos produtos e do frete do pedido.
+        data_tests:
+          - not_null
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
