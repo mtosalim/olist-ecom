@@ -121,9 +121,45 @@ models:
         description: Soma do valor dos produtos e do frete do pedido.
         data_tests:
           - not_null
-  
-  
-  
+
+  - name: int_order_payments__aggregated
+    description: >
+      Agrega os registros de pagamento no grão de uma linha por pedido.
+      Consolida a quantidade de registros e tipos de pagamento, o valor total
+      pago, o maior número válido de parcelas e o tipo responsável pelo maior
+      valor pago no pedido.
+
+    columns:
+      - name: order_id
+        description: Identificador único do pedido.
+        data_tests:
+          - not_null
+          - unique
+
+      - name: payment_count
+        description: Quantidade de registros de pagamento associados ao pedido.
+        data_tests:
+          - not_null
+
+      - name: distinct_payment_type_count
+        description: Quantidade de tipos distintos de pagamento utilizados no pedido.
+        data_tests:
+          - not_null
+
+      - name: primary_payment_type
+        description: Tipo de pagamento responsável pelo maior valor pago no pedido.
+        data_tests:
+          - not_null
+
+      - name: total_payment_value
+        description: Valor total pago considerando todos os registros de pagamento do pedido.
+        data_tests:
+          - not_null
+
+      - name: max_installments
+        description: >
+          Maior número válido de parcelas identificado no pedido. Pode ser nulo
+          quando todos os registros possuem uma quantidade de parcelas inválida.
   
   
   
