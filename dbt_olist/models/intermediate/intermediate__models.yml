@@ -1,0 +1,80 @@
+version: 2
+
+models:
+  - name: int_geolocation__aggregated
+    description: >
+      Consolida os dados de geolocalização da Olist no grão de uma linha
+      por prefixo de CEP. Para cada prefixo, seleciona a combinação de
+      cidade e estado mais frequente e calcula a mediana das coordenadas
+      de latitude e longitude.
+
+    columns:
+      - name: geolocation_zip_code_prefix
+        description: >
+          Prefixo de CEP que identifica unicamente cada registro do modelo.
+        data_tests:
+          - not_null
+          - unique
+
+      - name: geolocation_city
+        description: >
+          Cidade pertencente à combinação de cidade e estado mais frequente
+          encontrada para o prefixo de CEP.
+        data_tests:
+          - not_null
+
+      - name: geolocation_state
+        description: >
+          Unidade federativa pertencente à combinação de cidade e estado
+          mais frequente encontrada para o prefixo de CEP.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - AC
+                  - AL
+                  - AP
+                  - AM
+                  - BA
+                  - CE
+                  - DF
+                  - ES
+                  - GO
+                  - MA
+                  - MT
+                  - MS
+                  - MG
+                  - PA
+                  - PB
+                  - PR
+                  - PE
+                  - PI
+                  - RJ
+                  - RN
+                  - RS
+                  - RO
+                  - RR
+                  - SC
+                  - SP
+                  - SE
+                  - TO
+
+      - name: geolocation_lat
+        description: >
+          Mediana das latitudes disponíveis para o prefixo de CEP.
+        data_tests:
+          - not_null
+
+      - name: geolocation_lng
+        description: >
+          Mediana das longitudes disponíveis para o prefixo de CEP.
+        data_tests:
+          - not_null
+
+      - name: city_state_frequency
+        description: >
+          Quantidade de registros da staging que apresentam a combinação
+          vencedora de cidade e estado para o prefixo de CEP.
+        data_tests:
+          - not_null
