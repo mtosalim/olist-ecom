@@ -1,0 +1,73 @@
+version: 2
+
+models:
+  - name: dim_products
+    description: >
+      Dimensão de produtos no grão de uma linha por product_id, contendo
+      a categoria original, a categoria traduzida e os atributos descritivos
+      e físicos disponíveis para cada produto.
+
+    columns:
+      - name: product_id
+        description: Identificador único do produto e chave da dimensão.
+        data_tests:
+          - not_null
+          - unique
+
+      - name: product_category_name
+        description: >
+          Categoria original do produto em português. Produtos sem categoria
+          informada são identificados como unknown.
+        data_tests:
+          - not_null
+
+      - name: product_category_name_english
+        description: >
+          Categoria do produto traduzida para o inglês. Produtos sem tradução
+          ou categoria informada são identificados como unknown.
+        data_tests:
+          - not_null
+
+      - name: product_name_length
+        description: Quantidade de caracteres do nome do produto.
+
+      - name: product_description_length
+        description: Quantidade de caracteres da descrição do produto.
+
+      - name: product_photos_qty
+        description: Quantidade de fotos cadastradas para o produto.
+
+      - name: product_weight_g
+        description: Peso do produto em gramas.
+
+      - name: product_length_cm
+        description: Comprimento do produto em centímetros.
+
+      - name: product_height_cm
+        description: Altura do produto em centímetros.
+
+      - name: product_width_cm
+        description: Largura do produto em centímetros.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
