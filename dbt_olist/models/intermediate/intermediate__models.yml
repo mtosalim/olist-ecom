@@ -307,9 +307,65 @@ models:
           Longitude mediana associada ao prefixo de CEP. Pode ser nula quando
           o CEP não possui correspondência na base de geolocalização.
   
-  
-  
-  
-  
-  
-  
+  - name: int_order_reviews__deduplicated
+    description: >
+      Modelo intermediário com uma linha por pedido. Quando um pedido possui
+      mais de uma avaliação, preserva a avaliação respondida mais recentemente,
+      com base em review_answer_timestamp. Em caso de empate no timestamp,
+      utiliza review_id em ordem decrescente como critério de desempate
+      determinístico.
+
+    columns:
+      - name: order_id
+        description: >
+          Identificador do pedido e chave que define o grão do modelo.
+          Cada pedido aparece somente uma vez após a deduplicação.
+        data_tests:
+          - not_null
+          - unique
+          - relationships:
+              arguments:
+                to: ref('stg_orders')
+                field: order_id
+
+      - name: review_id
+        description: >
+          Identificador da avaliação preservada para o pedido. Não representa
+          uma chave única global, pois um mesmo review_id pode estar associado
+          a pedidos diferentes na fonte.
+        data_tests:
+          - not_null
+
+      - name: review_score
+        description: >
+          Nota atribuída pelo cliente ao pedido, variando de 1 a 5.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5]
+                quote: false
+
+      - name: review_comment_title
+        description: >
+          Título opcional escrito pelo cliente na avaliação. Permanece nulo
+          quando nenhum título foi informado.
+
+      - name: review_comment_message
+        description: >
+          Texto opcional escrito pelo cliente na avaliação. Permanece nulo
+          quando nenhum comentário foi informado.
+
+      - name: review_creation_date
+        description: >
+          Data em que a solicitação de avaliação do pedido foi criada.
+        data_tests:
+          - not_null
+
+      - name: review_answer_timestamp
+        description: >
+          Data e horário em que a avaliação foi respondida. É o principal
+          critério utilizado para selecionar a avaliação mais recente de
+          cada pedido.
+        data_tests:
+          - not_null
