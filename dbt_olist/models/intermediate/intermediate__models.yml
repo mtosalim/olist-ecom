@@ -506,3 +506,182 @@ models:
       - name: seller_state
         description: >
           Sigla da unidade federativa em que o vendedor está localizado.
+
+  - name: int_orders__enriched
+    description: >
+      Modelo intermediário enriquecido no grão de pedido, com uma linha por
+      order_id. Preserva todos os pedidos provenientes de stg_orders e adiciona
+      informações do cliente, métricas agregadas dos itens, métricas de pagamento
+      e a avaliação deduplicada do pedido por meio de left joins.
+
+    columns:
+      - name: order_id
+        description: >
+          Identificador único do pedido e chave que define o grão do modelo.
+        data_tests:
+          - not_null
+          - unique
+          - relationships:
+              arguments:
+                to: ref('stg_orders')
+                field: order_id
+
+      - name: customer_id
+        description: >
+          Identificador do registro do cliente associado ao pedido. Na base da
+          Olist, cada pedido possui um customer_id próprio.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('int_customers__enriched')
+                field: customer_id
+
+      - name: order_status
+        description: >
+          Situação registrada para o pedido no momento da extração dos dados.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - approved
+                  - canceled
+                  - created
+                  - delivered
+                  - invoiced
+                  - processing
+                  - shipped
+                  - unavailable
+
+      - name: order_purchase_timestamp
+        description: >
+          Data e horário em que o cliente realizou o pedido.
+        data_tests:
+          - not_null
+
+      - name: order_approved_at
+        description: >
+          Data e horário em que o pagamento do pedido foi aprovado. Pode permanecer
+          nulo em pedidos ainda não aprovados, cancelados ou indisponíveis.
+
+      - name: order_delivered_carrier_timestamp
+        description: >
+          Data e horário em que o pedido foi entregue à transportadora. Pode
+          permanecer nulo quando o pedido não alcançou essa etapa.
+
+      - name: order_delivered_customer_timestamp
+        description: >
+          Data e horário em que o pedido foi entregue ao cliente. Permanece nulo
+          para pedidos não entregues.
+
+      - name: order_estimated_delivery_date
+        description: >
+          Data estimada de entrega informada ao cliente no momento da compra.
+
+      - name: customer_unique_id
+        description: >
+          Identificador persistente do cliente, permitindo reconhecer compras
+          realizadas pela mesma pessoa em pedidos diferentes.
+        data_tests:
+          - not_null
+
+      - name: customer_zip_code_prefix
+        description: >
+          Prefixo de cinco dígitos do CEP informado pelo cliente.
+
+      - name: customer_city
+        description: >
+          Cidade normalizada do cliente associada ao pedido.
+
+      - name: customer_state
+        description: >
+          Sigla da unidade federativa do cliente.
+
+      - name: geolocation_lat
+        description: >
+          Latitude representativa do prefixo de CEP do cliente.
+
+      - name: geolocation_lng
+        description: >
+          Longitude representativa do prefixo de CEP do cliente.
+
+      - name: order_item_count
+        description: >
+          Quantidade total de itens registrados no pedido. Permanece nula quando
+          o pedido não possui registros na tabela de itens.
+
+      - name: distinct_product_count
+        description: >
+          Quantidade de produtos distintos presentes no pedido.
+
+      - name: distinct_seller_count
+        description: >
+          Quantidade de vendedores distintos envolvidos no pedido.
+
+      - name: total_product_value
+        description: >
+          Soma dos preços dos produtos presentes no pedido, sem incluir o frete.
+
+      - name: total_freight_value
+        description: >
+          Soma dos valores de frete atribuídos aos itens do pedido.
+
+      - name: total_order_item_value
+        description: >
+          Valor total calculado a partir da soma dos preços dos produtos e dos
+          valores de frete do pedido.
+
+      - name: payment_count
+        description: >
+          Quantidade de registros ou parcelas de pagamento associados ao pedido.
+          Permanece nula quando não existe pagamento registrado.
+
+      - name: distinct_payment_type_count
+        description: >
+          Quantidade de formas de pagamento distintas utilizadas no pedido.
+
+      - name: primary_payment_type
+        description: >
+          Principal forma de pagamento utilizada no pedido, determinada pelo
+          modelo agregado de pagamentos.
+
+      - name: total_payment_value
+        description: >
+          Valor total pago pelo cliente, considerando todos os registros de
+          pagamento associados ao pedido.
+
+      - name: max_installments
+        description: >
+          Maior quantidade de parcelas encontrada entre os pagamentos do pedido.
+
+      - name: review_id
+        description: >
+          Identificador da avaliação preservada para o pedido após a deduplicação.
+          Permanece nulo quando o pedido não possui avaliação.
+
+      - name: review_score
+        description: >
+          Nota atribuída pelo cliente ao pedido, variando de 1 a 5. Permanece nula
+          quando não existe avaliação.
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5]
+                quote: false
+
+      - name: review_comment_title
+        description: >
+          Título opcional informado pelo cliente na avaliação do pedido.
+
+      - name: review_comment_message
+        description: >
+          Comentário opcional informado pelo cliente na avaliação do pedido.
+
+      - name: review_creation_date
+        description: >
+          Data em que a solicitação de avaliação do pedido foi criada.
+
+      - name: review_answer_timestamp
+        description: >
+          Data e horário em que a avaliação preservada foi respondida pelo cliente.
