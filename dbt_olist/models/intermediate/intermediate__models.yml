@@ -237,7 +237,75 @@ models:
           Longitude mediana associada ao prefixo de CEP. Pode ser nula quando
           o CEP não possui correspondência na base de geolocalização.
   
-  
+  - name: int_sellers__enriched
+    description: >
+      Enriquece os dados dos vendedores com coordenadas geográficas obtidas
+      pelo prefixo de CEP. Mantém o grão de uma linha por seller_id e preserva
+      vendedores sem correspondência na base de geolocalização.
+
+    columns:
+      - name: seller_id
+        description: Identificador único do vendedor.
+        data_tests:
+          - not_null
+          - unique
+
+      - name: seller_zip_code_prefix
+        description: Prefixo do CEP informado pelo vendedor.
+        data_tests:
+          - not_null
+
+      - name: seller_city_normalized
+        description: >
+          Cidade do vendedor com normalização de acentos, capitalização
+          e espaços aplicada na camada Staging.
+        data_tests:
+          - not_null
+
+      - name: seller_state
+        description: Unidade federativa informada no cadastro do vendedor.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - AC
+                  - AL
+                  - AP
+                  - AM
+                  - BA
+                  - CE
+                  - DF
+                  - ES
+                  - GO
+                  - MA
+                  - MT
+                  - MS
+                  - MG
+                  - PA
+                  - PB
+                  - PR
+                  - PE
+                  - PI
+                  - RJ
+                  - RN
+                  - RS
+                  - RO
+                  - RR
+                  - SC
+                  - SP
+                  - SE
+                  - TO
+
+      - name: geolocation_lat
+        description: >
+          Latitude mediana associada ao prefixo de CEP. Pode ser nula quando
+          o CEP não possui correspondência na base de geolocalização.
+
+      - name: geolocation_lng
+        description: >
+          Longitude mediana associada ao prefixo de CEP. Pode ser nula quando
+          o CEP não possui correspondência na base de geolocalização.
   
   
   

@@ -24,10 +24,6 @@ customers_enriched as (
     from customers as c
     left join geolocation as g
         on c.customer_zip_code_prefix = g.geolocation_zip_code_prefix
-),
-
-final as (
-    select * from customers_enriched
 )
 
-select * from final
+select * from customers_enriched
