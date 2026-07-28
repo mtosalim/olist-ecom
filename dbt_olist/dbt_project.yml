@@ -12,9 +12,12 @@ models:
   dbt_olist:
     staging:
       +materialized: view
+      +schema: silver
 
     intermediate:
-      +materialized: view
+      +materialized: table
+      +schema: silver
 
     marts:
       +materialized: table
+      +schema: gold

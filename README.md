@@ -234,7 +234,7 @@ dbt build --select model_name
 - [x] Load the raw Olist datasets into BigQuery
 - [x] Build and test the Staging layer
 - [x] Complete the Intermediate layer
-- [ ] Build dimensional facts and dimensions
+- [x] Build dimensional facts and dimensions
 - [ ] Add business-level metrics and analyses
 - [ ] Build a Power BI dashboard
 - [ ] Add final architecture and lineage documentation
