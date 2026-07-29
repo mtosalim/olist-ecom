@@ -298,19 +298,56 @@ models:
         data_tests:
           - not_null
 
+      - name: order_purchase_date
+        description: Data em que o pedido foi realizado.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_dates')
+                field: date_day
+
       - name: order_approved_at
         description: Data e hora em que o pagamento do pedido foi aprovado.
+
+      - name: order_approved_date
+        description: Data em que o pagamento do pedido foi aprovado.
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_dates')
+                field: date_day
 
       - name: order_delivered_carrier_timestamp
         description: Data e hora em que o pedido foi entregue à transportadora.
 
+      - name: order_delivered_carrier_date
+        description: Data em que o pedido foi entregue à transportadora.
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_dates')
+                field: date_day
+
       - name: order_delivered_customer_timestamp
         description: Data e hora em que o pedido foi entregue ao cliente.
+        
+      - name: order_delivered_customer_date
+        description: Data em que o pedido foi entregue ao cliente.
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_dates')
+                field: date_day
 
       - name: order_estimated_delivery_date
         description: Data estimada para entrega do pedido.
         data_tests:
           - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_dates')
+                field: date_day
 
       - name: order_item_count
         description: Quantidade total de itens existentes no pedido.
@@ -368,7 +405,81 @@ models:
       - name: review_answer_timestamp
         description: Data e hora da resposta ou envio da avaliação.
 
+  - name: dim_dates
+    description: >
+      Dimensão calendário no grão de uma linha por dia, abrangendo todo o
+      período dos pedidos e contendo atributos para análises temporais.
 
+    columns:
+      - name: date_day
+        description: Data completa e chave primária da dimensão calendário.
+        data_tests:
+          - not_null
+          - unique
+
+      - name: year
+        description: Ano da data.
+        data_tests:
+          - not_null
+
+      - name: quarter
+        description: Trimestre do ano, variando de 1 a 4.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4]
+                quote: false
+
+      - name: month
+        description: Número do mês, variando de 1 a 12.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                quote: false
+
+      - name: month_name
+        description: Nome do mês em inglês.
+        data_tests:
+          - not_null
+
+      - name: year_month
+        description: Identificador do ano e mês no formato YYYY-MM.
+        data_tests:
+          - not_null
+
+      - name: week_of_year
+        description: Número ISO da semana dentro do ano.
+        data_tests:
+          - not_null
+
+      - name: day_of_month
+        description: Número do dia dentro do mês.
+        data_tests:
+          - not_null
+
+      - name: day_of_week
+        description: >
+          Número do dia da semana conforme o padrão do BigQuery,
+          sendo domingo igual a 1 e sábado igual a 7.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5, 6, 7]
+                quote: false
+
+      - name: day_name
+        description: Nome do dia da semana em inglês.
+        data_tests:
+          - not_null
+
+      - name: is_weekend
+        description: Indica se a data corresponde a sábado ou domingo.
+        data_tests:
+          - not_null
 
 
 

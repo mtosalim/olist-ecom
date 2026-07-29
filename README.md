@@ -7,8 +7,8 @@ The main goal is to learn and design a reliable data pipeline that supports anal
 orders, customers, sellers, products, payments, reviews, delivery performance,
 and revenue.
 
-> **Project status:** In development. The Bronze and Staging layers are
-> complete, and the Intermediate layer is currently being built.
+> **Project status:** In development. The Bronze, Staging, Intermediate and Marts layers are
+> complete, the business metrics and analyses are currently being built.
 
 ## Project Objectives
 
@@ -92,8 +92,7 @@ The project follows a few core modeling rules:
 
 - Every model has an explicitly defined grain.
 - Joins are validated before implementation.
-- One-to-many relationships are aggregated before joining to order-level
-  models.
+- One-to-many relationships are aggregated before joining to order-level models.
 - `LEFT JOIN` is used when unmatched source records must be preserved.
 - Known source-data limitations are documented instead of hidden.
 - `DISTINCT` is not used as a shortcut to conceal fanout or modeling errors.
@@ -110,17 +109,6 @@ olist_ecom/
     ├── packages.yml
     ├── models/
     │   ├── staging/
-    │   │   ├── _staging__models.yml
-    │   │   ├── _sources.yml
-    │   │   ├── stg_customers.sql
-    │   │   ├── stg_geolocation.sql
-    │   │   ├── stg_order_items.sql
-    │   │   ├── stg_order_payments.sql
-    │   │   ├── stg_order_reviews.sql
-    │   │   ├── stg_orders.sql
-    │   │   ├── stg_products.sql
-    │   │   ├── stg_product_category_name_translation.sql
-    │   │   └── stg_sellers.sql
     │   ├── intermediate/
     │   │   ├── intermediate__models.yml
     │   │   ├── customers/
@@ -140,31 +128,6 @@ olist_ecom/
 Generated folders such as `target/`, `logs/`, and `dbt_packages/` are excluded
 from version control.
 
-## Model Progress
-
-### Staging
-
-All source-aligned staging models have been completed.
-
-### Intermediate
-
-| Model | Purpose | Status |
-| --- | --- | --- |
-| `int_geolocation__aggregated` | Selects the most frequent city/state pair and median coordinates per ZIP code prefix | Complete |
-| `int_products__translated` | Enriches products with translated category names | Complete |
-| `int_customers__enriched` | Adds geographic coordinates to customer records | Complete |
-| `int_sellers__enriched` | Adds geographic coordinates to seller records | Planned |
-| `int_order_payments__aggregated` | Aggregates payment metrics to one row per order | Complete |
-| `int_order_reviews__deduplicated` | Resolves duplicated or repeated review records | Planned |
-| `int_order_items__enriched` | Enriches order items with product and seller attributes | Planned |
-| `int_order_items__aggregated` | Aggregates item, product, seller, freight, and value metrics per order | Complete |
-| `int_orders__enriched` | Produces the central enriched order-level model | Planned |
-
-### Marts
-
-Fact tables, dimensions, business metrics, and BI outputs will be added after
-the Intermediate layer is complete.
-
 ## Data Quality
 
 Data quality is enforced through dbt tests and validation queries. Current
@@ -177,16 +140,6 @@ checks include:
 - grain validation using total and distinct key counts;
 - explicit validation of expected nullable fields;
 - checks for partially missing coordinate pairs.
-
-### Examples of Data Issues Addressed
-
-- More than one geolocation record may exist for the same ZIP code prefix.
-- The same customer can have multiple order-specific `customer_id` values while
-  sharing one `customer_unique_id`.
-- Some customer and seller ZIP code prefixes have no geolocation match.
-- Orders may contain multiple items, sellers, products, and payment records.
-- Invalid or unavailable values are preserved as documented nulls when
-  appropriate.
 
 ## Tech Stack
 
@@ -201,9 +154,9 @@ checks include:
 
 ### Prerequisites
 
-- Access to a Google Cloud project with BigQuery enabled
+- Access to BigQuery enabled
 - A configured dbt profile
-- The Olist source tables loaded into the Bronze dataset
+- The Olist source tables from kaggle loaded into the Bronze dataset
 
 ### Install dependencies
 
