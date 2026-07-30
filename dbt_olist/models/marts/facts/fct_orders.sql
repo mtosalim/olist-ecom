@@ -17,6 +17,7 @@ fct_orders as (
         o.order_delivered_customer_timestamp,
         date(o.order_delivered_customer_timestamp) as order_delivered_customer_date,
         o.order_estimated_delivery_date,
+
         o.order_item_count,
         o.distinct_product_count,
         o.distinct_seller_count,
@@ -28,6 +29,7 @@ fct_orders as (
         o.primary_payment_type,
         o.total_payment_value,
         o.max_installments,
+        
         o.review_id,
         o.review_score,
         o.review_comment_title,

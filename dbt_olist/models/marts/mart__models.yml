@@ -481,7 +481,60 @@ models:
         data_tests:
           - not_null
 
+  - name: sales_and_orders
+    description: >
+      Agregação diária de vendas e pedidos no grão de uma linha por data de
+      compra. Consolida volume de pedidos e métricas financeiras referentes
+      somente aos pedidos entregues.
 
+    columns:
+      - name: date_day
+        description: Data de compra usada como chave e grão diário do modelo.
+        data_tests:
+          - not_null
+          - unique
+          - relationships:
+              arguments:
+                to: ref('dim_dates')
+                field: date_day
+
+      - name: total_orders
+        description: Quantidade total de pedidos realizados na data, independentemente do status.
+        data_tests:
+          - not_null
+
+      - name: delivered_orders
+        description: Quantidade de pedidos com status delivered.
+        data_tests:
+          - not_null
+
+      - name: canceled_orders
+        description: Quantidade de pedidos com status canceled.
+        data_tests:
+          - not_null
+
+      - name: delivered_gmv
+        description: >
+          Soma do valor total dos pagamentos dos pedidos entregues. Representa
+          uma aproximação do GMV entregue, pois o dataset não contém informações
+          sobre estornos, impostos ou repasses aos sellers.
+        data_tests:
+          - not_null
+
+      - name: avg_order_value
+        description: Valor médio de pagamento dos pedidos entregues na data.
+        data_tests:
+          - not_null
+
+      - name: items_sold
+        description: Quantidade total de itens pertencentes a pedidos entregues.
+        data_tests:
+          - not_null
+
+      - name: freight_value
+        description: Valor total de frete dos pedidos entregues.
+        data_tests:
+          - not_null
 
 
 
