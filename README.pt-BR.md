@@ -99,7 +99,7 @@ O projeto segue algumas regras centrais:
 olist_ecom/
 ├── README.md
 ├── .gitignore
-├── dashboards/
+├── powerbi/
 └── dbt_olist/
     ├── dbt_project.yml
     ├── packages.yml
