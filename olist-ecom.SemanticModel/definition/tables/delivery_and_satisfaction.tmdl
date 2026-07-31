@@ -1,0 +1,131 @@
+table delivery_and_satisfaction
+	lineageTag: e1a15168-5e2d-4155-8529-bb5196cb835c
+
+	column date_day
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: b7ed55b6-c93e-4f6b-b353-1e4db149391a
+		summarizeBy: none
+		sourceColumn: date_day
+
+		variation Variation
+			isDefault
+			relationship: bb66cd96-8d27-40b5-bfce-c278ca6728db
+			defaultHierarchy: LocalDateTable_89eecda2-074b-4593-9452-93c028b0e406.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column delivered_orders
+		dataType: int64
+		formatString: 0
+		lineageTag: fbbf4d70-0cea-4e71-93f8-50cddbb813ef
+		summarizeBy: sum
+		sourceColumn: delivered_orders
+
+		annotation SummarizationSetBy = Automatic
+
+	column ontime_orders
+		dataType: int64
+		formatString: 0
+		lineageTag: 9e530125-7021-4197-ba66-2874531ad4be
+		summarizeBy: sum
+		sourceColumn: ontime_orders
+
+		annotation SummarizationSetBy = Automatic
+
+	column late_orders
+		dataType: int64
+		formatString: 0
+		lineageTag: 19faa7d3-4a2e-433c-bbb7-ceb35a2ccb74
+		summarizeBy: sum
+		sourceColumn: late_orders
+
+		annotation SummarizationSetBy = Automatic
+
+	column pct_ontime_orders
+		dataType: double
+		lineageTag: 96e0415b-2083-4e3b-a96e-aec8e8ac70e4
+		summarizeBy: sum
+		sourceColumn: pct_ontime_orders
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column avg_delivered_orders
+		dataType: double
+		lineageTag: 87b92995-6be7-4f67-aff9-d35f6c4c832e
+		summarizeBy: sum
+		sourceColumn: avg_delivered_orders
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column avg_late_days
+		dataType: double
+		lineageTag: 001d4ef5-90a9-43b7-a435-cf53262f38b9
+		summarizeBy: sum
+		sourceColumn: avg_late_days
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column avg_review_delivered_orders
+		dataType: double
+		lineageTag: 202e6a47-fd43-421d-84d5-ba5c2efd8ae7
+		summarizeBy: sum
+		sourceColumn: avg_review_delivered_orders
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column avg_review_ontime_orders
+		dataType: double
+		lineageTag: 049c7507-c08f-4294-900f-ad49f4e275e3
+		summarizeBy: sum
+		sourceColumn: avg_review_ontime_orders
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column avg_review_late_orders
+		dataType: double
+		lineageTag: 6963884a-68da-4072-aaf0-4693af9b7203
+		summarizeBy: sum
+		sourceColumn: avg_review_late_orders
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column avg_freight_delivered_orders
+		dataType: double
+		lineageTag: 5c0d5856-7f78-4eed-b073-c32602e8392c
+		summarizeBy: sum
+		sourceColumn: avg_freight_delivered_orders
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition delivery_and_satisfaction = m
+		mode: import
+		source =
+				let
+				    Fonte = GoogleBigQuery.Database([Implementation="2.0"]),
+				    #"olist-ecom-503120_Database" = Fonte{[Name="olist-ecom-503120",Kind="Database"]}[Data],
+				    olist_gold_Schema = #"olist-ecom-503120_Database"{[Name="olist_gold",Kind="Schema"]}[Data],
+				    delivery_and_satisfaction_Table = olist_gold_Schema{[Name="delivery_and_satisfaction",Kind="Table"]}[Data]
+				in
+				    delivery_and_satisfaction_Table
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

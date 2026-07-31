@@ -1,0 +1,182 @@
+table products_and_sellers
+	lineageTag: 168db119-4ba6-4e77-a07d-689164fd3751
+
+	column order_id
+		dataType: string
+		lineageTag: 43a93869-001f-41e3-97a1-620d09755ce2
+		summarizeBy: none
+		sourceColumn: order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_item_id
+		dataType: int64
+		formatString: 0
+		lineageTag: c67b0588-9cf8-4e5e-92c2-c9ca912a71be
+		summarizeBy: sum
+		sourceColumn: order_item_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_purchase_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 72bf4db6-4d1a-48cc-9ded-2db3df6dfa03
+		summarizeBy: none
+		sourceColumn: order_purchase_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column order_status
+		dataType: string
+		lineageTag: 73582bdb-a7de-4799-8404-45bbfea5a347
+		summarizeBy: none
+		sourceColumn: order_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_delivered
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 1a684666-7970-45da-a71a-3825a235937c
+		summarizeBy: none
+		sourceColumn: is_delivered
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_id
+		dataType: string
+		lineageTag: 9ed78dd9-7b1d-4555-88b5-9f94cda58fa5
+		summarizeBy: none
+		sourceColumn: product_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_category_name
+		dataType: string
+		lineageTag: eb398eb1-3b6d-4a17-8c10-099356de72e8
+		summarizeBy: none
+		sourceColumn: product_category_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_category_name_english
+		dataType: string
+		lineageTag: 37d813c4-1392-431e-ab55-9291393da6ff
+		summarizeBy: none
+		sourceColumn: product_category_name_english
+
+		annotation SummarizationSetBy = Automatic
+
+	column seller_id
+		dataType: string
+		lineageTag: cf2a2879-fd09-447c-aa4d-068979a63834
+		summarizeBy: none
+		sourceColumn: seller_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column seller_city_normalized
+		dataType: string
+		lineageTag: 8d4cb2da-7fa7-436b-93d2-a6804d2cd0dd
+		summarizeBy: none
+		sourceColumn: seller_city_normalized
+
+		annotation SummarizationSetBy = Automatic
+
+	column seller_state
+		dataType: string
+		lineageTag: 829b7983-fa7b-442d-8898-ccfb0157a7fa
+		summarizeBy: none
+		sourceColumn: seller_state
+
+		annotation SummarizationSetBy = Automatic
+
+	column seller_lat
+		dataType: double
+		lineageTag: 2d68e501-28fb-4d71-a748-492389c756ea
+		summarizeBy: sum
+		sourceColumn: seller_lat
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column seller_lng
+		dataType: double
+		lineageTag: 30a50696-ae49-480b-b077-21599c5e8f52
+		summarizeBy: sum
+		sourceColumn: seller_lng
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column shipping_limit_timestamp
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: bd846288-c6c6-4d99-9861-34eb61521d02
+		summarizeBy: none
+		sourceColumn: shipping_limit_timestamp
+
+		variation Variation
+			isDefault
+			relationship: 2f21384a-9a54-483b-9ea8-97fa864a5efa
+			defaultHierarchy: LocalDateTable_e8854bdb-2915-4db2-ab3a-301ac25b0501.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column price
+		dataType: double
+		lineageTag: 32555424-09cd-43a4-b296-e4f60b3262f7
+		summarizeBy: sum
+		sourceColumn: price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column freight_value
+		dataType: double
+		lineageTag: 1e837e25-fdfd-4754-bdf6-cb9657999e15
+		summarizeBy: sum
+		sourceColumn: freight_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column order_item_total_value
+		dataType: double
+		lineageTag: 6d7c0f49-af54-49e0-a11c-90886935078b
+		summarizeBy: sum
+		sourceColumn: order_item_total_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column review_score
+		dataType: int64
+		formatString: 0
+		lineageTag: 13e24325-9a83-4300-8d7b-41b1b76dbc7b
+		summarizeBy: sum
+		sourceColumn: review_score
+
+		annotation SummarizationSetBy = Automatic
+
+	partition products_and_sellers = m
+		mode: import
+		source =
+				let
+				    Fonte = GoogleBigQuery.Database([Implementation="2.0"]),
+				    #"olist-ecom-503120_Database" = Fonte{[Name="olist-ecom-503120",Kind="Database"]}[Data],
+				    olist_gold_Schema = #"olist-ecom-503120_Database"{[Name="olist_gold",Kind="Schema"]}[Data],
+				    products_and_sellers_Table = olist_gold_Schema{[Name="products_and_sellers",Kind="Table"]}[Data]
+				in
+				    products_and_sellers_Table
+
+	annotation PBI_ResultType = Table
+

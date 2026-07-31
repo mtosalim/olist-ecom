@@ -1,0 +1,192 @@
+table customers_and_payments
+	lineageTag: f6900b5d-0812-48c3-87a8-b1a5635eb806
+
+	column order_id
+		dataType: string
+		lineageTag: 672d4438-78e5-4c07-9e75-556a3dac7d0b
+		summarizeBy: none
+		sourceColumn: order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_purchase_timestamp
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 5595f3af-2645-4079-9935-48e55b4d917a
+		summarizeBy: none
+		sourceColumn: order_purchase_timestamp
+
+		variation Variation
+			isDefault
+			relationship: 5c452ad5-fb50-482d-9e14-f5e99c78f90b
+			defaultHierarchy: LocalDateTable_d1809b19-ef95-4a31-a591-3a1b1d068970.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_purchase_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 84255f0c-ffe4-4d65-8f54-931993e429b3
+		summarizeBy: none
+		sourceColumn: order_purchase_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column order_status
+		dataType: string
+		lineageTag: ceb3a4a6-5044-44e0-a759-fc0132a1c9d2
+		summarizeBy: none
+		sourceColumn: order_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_id
+		dataType: string
+		lineageTag: a289955c-6704-44e7-a77e-d9a6f494dac5
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_unique_id
+		dataType: string
+		lineageTag: 23ec9e51-5737-40a6-93af-a90687efa77a
+		summarizeBy: none
+		sourceColumn: customer_unique_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_city
+		dataType: string
+		lineageTag: 0b9781f2-19da-4132-bce2-11d1b938ba6f
+		summarizeBy: none
+		sourceColumn: customer_city
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_state
+		dataType: string
+		lineageTag: 413b3f7f-c04c-4a78-af75-5a08859a5337
+		summarizeBy: none
+		sourceColumn: customer_state
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_lat
+		dataType: double
+		lineageTag: 89060c13-f9f0-4c79-8ba7-35de325c9459
+		summarizeBy: sum
+		sourceColumn: customer_lat
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column customer_lng
+		dataType: double
+		lineageTag: ef766131-aa15-40b4-801c-20eedfb79fc1
+		summarizeBy: sum
+		sourceColumn: customer_lng
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column payment_count
+		dataType: int64
+		formatString: 0
+		lineageTag: abfb8eef-85a3-47f8-8fc0-4561c3c28a19
+		summarizeBy: sum
+		sourceColumn: payment_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column distinct_payment_type_count
+		dataType: int64
+		formatString: 0
+		lineageTag: ce3089fd-50c6-44c5-839c-11fd19491b95
+		summarizeBy: sum
+		sourceColumn: distinct_payment_type_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column primary_payment_type
+		dataType: string
+		lineageTag: d10e0dee-3804-44cd-bf3a-5919d5283e23
+		summarizeBy: none
+		sourceColumn: primary_payment_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_payment_value
+		dataType: double
+		lineageTag: 930baff8-619b-423a-80d6-3ce1266bc540
+		summarizeBy: sum
+		sourceColumn: total_payment_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column max_installments
+		dataType: int64
+		formatString: 0
+		lineageTag: cccd9c42-deb0-4366-8b98-2c430c5dabea
+		summarizeBy: sum
+		sourceColumn: max_installments
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_order_count
+		dataType: int64
+		formatString: 0
+		lineageTag: b9216ece-f962-41d2-9f2e-0c22dec20b6f
+		summarizeBy: sum
+		sourceColumn: customer_order_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_order_number
+		dataType: int64
+		formatString: 0
+		lineageTag: c1ae5288-741a-4610-b718-fef83bf05c3a
+		summarizeBy: sum
+		sourceColumn: customer_order_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_repeat_customer
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: d8ba124f-3718-4320-a8a2-15f95b0f03a5
+		summarizeBy: none
+		sourceColumn: is_repeat_customer
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_repeat_order
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 581cacb7-9108-45ba-947c-5b9d224ac4b7
+		summarizeBy: none
+		sourceColumn: is_repeat_order
+
+		annotation SummarizationSetBy = Automatic
+
+	partition customers_and_payments = m
+		mode: import
+		source =
+				let
+				    Fonte = GoogleBigQuery.Database([Implementation="2.0"]),
+				    #"olist-ecom-503120_Database" = Fonte{[Name="olist-ecom-503120",Kind="Database"]}[Data],
+				    olist_gold_Schema = #"olist-ecom-503120_Database"{[Name="olist_gold",Kind="Schema"]}[Data],
+				    customers_and_payments_Table = olist_gold_Schema{[Name="customers_and_payments",Kind="Table"]}[Data]
+				in
+				    customers_and_payments_Table
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

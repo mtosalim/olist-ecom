@@ -1,3 +1,8 @@
+<p align="right">
+  <a href="README.pt-BR.md">🇧🇷 Português</a> |
+  <strong>🇺🇸 English</strong>
+</p>
+
 # Olist E-commerce Analytics Engineering Project
 
 Heyo, I was looking for a way to learn more about BigQuery and dbt, so I started building this project using the Brazilian Olist
@@ -7,8 +12,8 @@ The main goal is to learn and design a reliable data pipeline that supports anal
 orders, customers, sellers, products, payments, reviews, delivery performance,
 and revenue.
 
-> **Project status:** In development. The Bronze, Staging, Intermediate and Marts layers are
-> complete, the business metrics and analyses are currently being built.
+> **Project status:** In development. The Bronze, Staging, Intermediate, Marts and Business Metrics layers are all
+> complete, Power BI dashboards are currently being built.
 
 ## Project Objectives
 
@@ -104,9 +109,11 @@ The project follows a few core modeling rules:
 olist_ecom/
 ├── README.md
 ├── .gitignore
+├── dashboards/
 └── dbt_olist/
     ├── dbt_project.yml
     ├── packages.yml
+    ├── assets/
     ├── models/
     │   ├── staging/
     │   ├── intermediate/
@@ -119,6 +126,7 @@ olist_ecom/
     │   └── marts/
     │       ├── dimensions/
     │       └── facts/
+    │       └── dataviz/    
     ├── macros/
     ├── seeds/
     ├── snapshots/
@@ -127,6 +135,12 @@ olist_ecom/
 
 Generated folders such as `target/`, `logs/`, and `dbt_packages/` are excluded
 from version control.
+
+## Data Lineage
+
+The lineage below shows the data flow from the raw BigQuery sources through the Staging and Intermediate layers to the Gold marts and analytical models.
+
+![dbt data lineage](dbt_olist/assets/dbt-lineage.png)
 
 ## Data Quality
 
@@ -188,6 +202,6 @@ dbt build --select model_name
 - [x] Build and test the Staging layer
 - [x] Complete the Intermediate layer
 - [x] Build dimensional facts and dimensions
-- [ ] Add business-level metrics and analyses
+- [x] Add business-level metrics and analyses
 - [ ] Build a Power BI dashboard
 - [ ] Add final architecture and lineage documentation

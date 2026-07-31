@@ -483,13 +483,12 @@ models:
 
   - name: sales_and_orders
     description: >
-      Agregação diária de vendas e pedidos no grão de uma linha por data de
-      compra. Consolida volume de pedidos e métricas financeiras referentes
-      somente aos pedidos entregues.
+      Agregação diária de vendas e pedidos no grão de uma linha por data
+      de compra. As métricas financeiras consideram somente pedidos entregues.
 
     columns:
       - name: date_day
-        description: Data de compra usada como chave e grão diário do modelo.
+        description: Data de compra e chave do grão diário.
         data_tests:
           - not_null
           - unique
@@ -499,7 +498,7 @@ models:
                 field: date_day
 
       - name: total_orders
-        description: Quantidade total de pedidos realizados na data, independentemente do status.
+        description: Quantidade total de pedidos realizados na data.
         data_tests:
           - not_null
 
@@ -514,20 +513,17 @@ models:
           - not_null
 
       - name: delivered_gmv
-        description: >
-          Soma do valor total dos pagamentos dos pedidos entregues. Representa
-          uma aproximação do GMV entregue, pois o dataset não contém informações
-          sobre estornos, impostos ou repasses aos sellers.
+        description: Soma dos pagamentos dos pedidos entregues.
         data_tests:
           - not_null
 
       - name: avg_order_value
-        description: Valor médio de pagamento dos pedidos entregues na data.
+        description: Valor médio dos pedidos entregues na data.
         data_tests:
           - not_null
 
       - name: items_sold
-        description: Quantidade total de itens pertencentes a pedidos entregues.
+        description: Quantidade de itens pertencentes a pedidos entregues.
         data_tests:
           - not_null
 
@@ -536,7 +532,266 @@ models:
         data_tests:
           - not_null
 
+  - name: delivery_and_satisfaction
+    description: >
+      Agregação diária de indicadores de entrega, atraso, avaliação
+      e frete, usando a data de compra como grão.
 
+    columns:
+      - name: date_day
+        description: Data de compra e chave do grão diário.
+        data_tests:
+          - not_null
+          - unique
+          - relationships:
+              arguments:
+                to: ref('dim_dates')
+                field: date_day
+
+      - name: delivered_orders
+        description: Quantidade de pedidos com status delivered.
+        data_tests:
+          - not_null
+
+      - name: ontime_orders
+        description: Quantidade de pedidos entregues até a data estimada.
+        data_tests:
+          - not_null
+
+      - name: late_orders
+        description: Quantidade de pedidos entregues após a data estimada.
+        data_tests:
+          - not_null
+
+      - name: pct_ontime_orders
+        description: Proporção de pedidos entregues dentro do prazo.
+
+      - name: avg_delivery_days
+        description: Média de dias entre a compra e a entrega ao cliente.
+
+      - name: avg_late_days
+        description: Média de dias de atraso dos pedidos entregues com atraso.
+
+      - name: avg_review_delivered_orders
+        description: Nota média dos pedidos entregues.
+
+      - name: avg_review_ontime_orders
+        description: Nota média dos pedidos entregues dentro do prazo.
+
+      - name: avg_review_late_orders
+        description: Nota média dos pedidos entregues com atraso.
+
+      - name: avg_freight_delivered_orders
+        description: Valor médio de frete dos pedidos entregues.
+
+  - name: products_and_sellers
+    description: >
+      Modelo analítico no grão de uma linha por item do pedido, enriquecido
+      com informações de produto, categoria, seller, localização, venda,
+      frete e avaliação.
+
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - order_id
+              - order_item_id
+
+    columns:
+      - name: order_id
+        description: Identificador do pedido.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fct_orders')
+                field: order_id
+
+      - name: order_item_id
+        description: Número sequencial do item dentro do pedido.
+        data_tests:
+          - not_null
+
+      - name: order_purchase_date
+        description: Data em que o pedido foi realizado.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_dates')
+                field: date_day
+
+      - name: order_status
+        description: Status do pedido.
+        data_tests:
+          - not_null
+
+      - name: is_delivered
+        description: Indica se o pedido ao qual o item pertence foi entregue.
+        data_tests:
+          - not_null
+
+      - name: product_id
+        description: Identificador do produto.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_products')
+                field: product_id
+
+      - name: product_category_name
+        description: Categoria original do produto em português.
+
+      - name: product_category_name_english
+        description: Categoria do produto traduzida para o inglês.
+
+      - name: seller_id
+        description: Identificador do vendedor.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_sellers')
+                field: seller_id
+
+      - name: seller_city_normalized
+        description: Cidade normalizada do vendedor.
+
+      - name: seller_state
+        description: Estado do vendedor.
+
+      - name: seller_lat
+        description: Latitude representativa do vendedor.
+
+      - name: seller_lng
+        description: Longitude representativa do vendedor.
+
+      - name: shipping_limit_timestamp
+        description: Data e hora limite para envio do item.
+
+      - name: price
+        description: Preço do produto sem o frete.
+        data_tests:
+          - not_null
+
+      - name: freight_value
+        description: Valor do frete associado ao item.
+        data_tests:
+          - not_null
+
+      - name: order_item_total_value
+        description: Valor total do item, incluindo o frete.
+        data_tests:
+          - not_null
+
+      - name: review_score
+        description: Nota da avaliação do pedido, variando entre 1 e 5.
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5]
+                quote: false
+
+  - name: customers_and_payments
+    description: >
+      Modelo analítico no grão de uma linha por pedido, contendo localização
+      do cliente, informações de pagamento e indicadores de recorrência.
+
+    columns:
+      - name: order_id
+        description: Identificador único do pedido e chave do modelo.
+        data_tests:
+          - not_null
+          - unique
+          - relationships:
+              arguments:
+                to: ref('fct_orders')
+                field: order_id
+
+      - name: order_purchase_timestamp
+        description: Data e hora em que o pedido foi realizado.
+        data_tests:
+          - not_null
+
+      - name: order_purchase_date
+        description: Data em que o pedido foi realizado.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_dates')
+                field: date_day
+
+      - name: order_status
+        description: Status do pedido.
+        data_tests:
+          - not_null
+
+      - name: customer_id
+        description: Identificador do cliente associado ao pedido.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customers')
+                field: customer_id
+
+      - name: customer_unique_id
+        description: Identificador utilizado para reconhecer a mesma pessoa em pedidos diferentes.
+        data_tests:
+          - not_null
+
+      - name: customer_city
+        description: Cidade normalizada do cliente.
+        data_tests:
+          - not_null
+
+      - name: customer_state
+        description: Estado do cliente.
+        data_tests:
+          - not_null
+
+      - name: customer_lat
+        description: Latitude representativa do cliente.
+
+      - name: customer_lng
+        description: Longitude representativa do cliente.
+
+      - name: payment_count
+        description: Quantidade de registros de pagamento do pedido.
+
+      - name: distinct_payment_type_count
+        description: Quantidade de formas de pagamento diferentes utilizadas no pedido.
+
+      - name: primary_payment_type
+        description: Forma de pagamento com maior valor dentro do pedido.
+
+      - name: total_payment_value
+        description: Valor total registrado nos pagamentos do pedido.
+
+      - name: max_installments
+        description: Maior quantidade de parcelas registrada no pedido.
+
+      - name: customer_order_count
+        description: Quantidade total de pedidos do cliente no histórico.
+        data_tests:
+          - not_null
+
+      - name: customer_order_number
+        description: Posição cronológica do pedido no histórico do cliente.
+        data_tests:
+          - not_null
+
+      - name: is_repeat_customer
+        description: Indica se o cliente possui mais de um pedido no histórico.
+        data_tests:
+          - not_null
+
+      - name: is_repeat_order
+        description: Indica se o pedido é a segunda compra ou uma compra posterior.
+        data_tests:
+          - not_null
 
 
 

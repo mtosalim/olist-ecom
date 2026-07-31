@@ -1,0 +1,118 @@
+table dim_dates
+	lineageTag: 5f02c42d-af3b-43a8-a33c-05ab765940fa
+
+	column date_day
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: ccb3100e-24a4-45dc-8602-64f035aee040
+		summarizeBy: none
+		sourceColumn: date_day
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column year
+		dataType: int64
+		formatString: 0
+		lineageTag: f9fc6d74-0215-4eb7-9b31-b26dfe490dc6
+		summarizeBy: sum
+		sourceColumn: year
+
+		annotation SummarizationSetBy = Automatic
+
+	column quarter
+		dataType: int64
+		formatString: 0
+		lineageTag: 76efe67b-58dd-410d-bc92-294909aae209
+		summarizeBy: sum
+		sourceColumn: quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column month
+		dataType: int64
+		formatString: 0
+		lineageTag: 7d28b8aa-464f-4275-b326-bcf6f22f3748
+		summarizeBy: sum
+		sourceColumn: month
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_name
+		dataType: string
+		lineageTag: 4b0515c6-0b24-454b-b654-e693b8ce0bb8
+		summarizeBy: none
+		sourceColumn: month_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column year_month
+		dataType: string
+		lineageTag: fb5be4d4-65cf-449a-a60e-4f1030c1b84a
+		summarizeBy: none
+		sourceColumn: year_month
+
+		annotation SummarizationSetBy = Automatic
+
+	column week_of_year
+		dataType: int64
+		formatString: 0
+		lineageTag: f038905c-8ec8-4110-b34a-bf859d838f5d
+		summarizeBy: sum
+		sourceColumn: week_of_year
+
+		annotation SummarizationSetBy = Automatic
+
+	column day_of_month
+		dataType: int64
+		formatString: 0
+		lineageTag: 0ae97584-d9ad-4890-a1bf-81fbd502b347
+		summarizeBy: sum
+		sourceColumn: day_of_month
+
+		annotation SummarizationSetBy = Automatic
+
+	column day_of_week
+		dataType: int64
+		formatString: 0
+		lineageTag: 2c9a8df8-8f9f-4dc3-99a2-b464e236cbee
+		summarizeBy: sum
+		sourceColumn: day_of_week
+
+		annotation SummarizationSetBy = Automatic
+
+	column day_name
+		dataType: string
+		lineageTag: f98e3c8b-f663-49b8-a053-c6041a5ffb5a
+		summarizeBy: none
+		sourceColumn: day_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_weekend
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: db1e919a-389d-4fb2-a0d1-127b7795f964
+		summarizeBy: none
+		sourceColumn: is_weekend
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_dates = m
+		mode: import
+		source =
+				let
+				    Fonte = GoogleBigQuery.Database([Implementation="2.0"]),
+				    #"olist-ecom-503120_Database" = Fonte{[Name="olist-ecom-503120",Kind="Database"]}[Data],
+				    olist_gold_Schema = #"olist-ecom-503120_Database"{[Name="olist_gold",Kind="Schema"]}[Data],
+				    dim_dates_Table = olist_gold_Schema{[Name="dim_dates",Kind="Table"]}[Data]
+				in
+				    dim_dates_Table
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+
