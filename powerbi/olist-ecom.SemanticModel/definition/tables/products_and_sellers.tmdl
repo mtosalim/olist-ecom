@@ -1,6 +1,102 @@
 table products_and_sellers
 	lineageTag: 168db119-4ba6-4e77-a07d-689164fd3751
 
+	measure 'Delivered Item GMV' =
+			CALCULATE(
+				SUM('products_and_sellers'[order_item_total_value]),
+				'products_and_sellers'[is_delivered] = TRUE()
+			)
+		formatString: R$ #,##0
+		displayFolder: Product KPIs
+		lineageTag: e19ebf8c-984d-4642-a29e-d94fa77d3f2f
+
+	measure 'Delivered Product Revenue' =
+			CALCULATE(
+				SUM('products_and_sellers'[price]),
+				'products_and_sellers'[is_delivered] = TRUE()
+			)
+		formatString: R$ #,##0
+		displayFolder: Product KPIs
+		lineageTag: fb7c8b40-f8b7-4f7f-8fa2-b261bccf054d
+
+	measure 'Delivered Freight Value' =
+			CALCULATE(
+				SUM('products_and_sellers'[freight_value]),
+				'products_and_sellers'[is_delivered] = TRUE()
+			)
+		formatString: R$ #,##0
+		displayFolder: Product KPIs
+		lineageTag: 26fe0dfd-249d-47f1-978f-84f289a5fd64
+
+	measure 'Delivered Items' =
+			CALCULATE(
+				COUNTROWS('products_and_sellers'),
+				'products_and_sellers'[is_delivered] = TRUE()
+			)
+		formatString: #,##0
+		displayFolder: Product KPIs
+		lineageTag: dbccb044-1dcf-489d-ae99-3ad240543b02
+
+	measure 'Distinct Products' = DISTINCTCOUNT('products_and_sellers'[product_id])
+		formatString: #,##0
+		displayFolder: Product KPIs
+		lineageTag: f8d8b06f-6aad-45f7-814a-86bbda8dcc9f
+
+	measure 'Distinct Sellers' = DISTINCTCOUNT('products_and_sellers'[seller_id])
+		formatString: #,##0
+		displayFolder: Seller KPIs
+		lineageTag: 174d202f-3697-4699-a337-38e75953ff8d
+
+	measure 'Freight Share' = DIVIDE([Delivered Freight Value], [Delivered Item GMV])
+		formatString: 0.0%
+		displayFolder: Product KPIs
+		lineageTag: 64efb932-0d19-496b-87f9-3d17012f8f9f
+
+	measure 'Top 10 Category GMV' =
+			VAR CategoryRank =
+				RANKX(
+					ALLSELECTED('products_and_sellers'[product_category_name_english]),
+					[Delivered Item GMV],
+					,
+					DESC,
+					DENSE
+				)
+			RETURN
+				IF(CategoryRank <= 10, [Delivered Item GMV])
+		formatString: R$ #,##0
+		displayFolder: Ranking Measures
+		lineageTag: 419bdc14-2bbc-421f-a4bb-b17216d46d9a
+
+	measure 'Top 10 Category Items' =
+			VAR CategoryRank =
+				RANKX(
+					ALLSELECTED('products_and_sellers'[product_category_name_english]),
+					[Delivered Items],
+					,
+					DESC,
+					DENSE
+				)
+			RETURN
+				IF(CategoryRank <= 10, [Delivered Items])
+		formatString: #,##0
+		displayFolder: Ranking Measures
+		lineageTag: cc73259e-7108-4485-ba76-1f26d53bac82
+
+	measure 'Top 10 Seller State GMV' =
+			VAR SellerStateRank =
+				RANKX(
+					ALLSELECTED('products_and_sellers'[seller_state]),
+					[Delivered Item GMV],
+					,
+					DESC,
+					DENSE
+				)
+			RETURN
+				IF(SellerStateRank <= 10, [Delivered Item GMV])
+		formatString: R$ #,##0
+		displayFolder: Ranking Measures
+		lineageTag: 2d95572b-efce-48bd-bd70-24158edc2252
+
 	column order_id
 		dataType: string
 		lineageTag: 43a93869-001f-41e3-97a1-620d09755ce2
@@ -120,11 +216,6 @@ table products_and_sellers
 		lineageTag: bd846288-c6c6-4d99-9861-34eb61521d02
 		summarizeBy: none
 		sourceColumn: shipping_limit_timestamp
-
-		variation Variation
-			isDefault
-			relationship: 2f21384a-9a54-483b-9ea8-97fa864a5efa
-			defaultHierarchy: LocalDateTable_e8854bdb-2915-4db2-ab3a-301ac25b0501.'Hierarquia de datas'
 
 		annotation SummarizationSetBy = Automatic
 

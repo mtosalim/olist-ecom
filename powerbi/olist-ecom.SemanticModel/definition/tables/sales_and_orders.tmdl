@@ -1,17 +1,52 @@
 table sales_and_orders
 	lineageTag: cd8d7c7a-9a2f-4b0a-8b96-36145c40adea
 
+	measure 'Total Orders' = SUM('sales_and_orders'[total_orders])
+		formatString: #,##0
+		displayFolder: Executive KPIs
+		lineageTag: 56f10bad-a82e-43a7-aa0d-567387b56d50
+
+	measure 'Delivered Orders' = SUM('sales_and_orders'[delivered_orders])
+		formatString: #,##0
+		displayFolder: Executive KPIs
+		lineageTag: 19a5148f-857b-4b9d-b6c6-44df32d42448
+
+	measure 'Canceled Orders' = SUM('sales_and_orders'[canceled_orders])
+		formatString: #,##0
+		displayFolder: Executive KPIs
+		lineageTag: bc223f04-29db-4b3f-a58c-b8cc88cbcb68
+
+	measure 'Delivered GMV' = SUM('sales_and_orders'[delivered_gmv])
+		formatString: R$ #,##0
+		displayFolder: Executive KPIs
+		lineageTag: cf384f59-c7b2-4ee3-b055-f3b7a3c9f007
+
+	measure 'Average Order Value' = DIVIDE([Delivered GMV], [Delivered Orders])
+		formatString: R$ #,##0.00
+		displayFolder: Executive KPIs
+		lineageTag: 248efe4b-4218-4937-925a-e3b6a6b37eb9
+
+	measure 'Items Sold' = SUM('sales_and_orders'[items_sold])
+		formatString: #,##0
+		displayFolder: Executive KPIs
+		lineageTag: f0874500-90ab-401d-aec6-ce67270c9b3a
+
+	measure 'Freight Value' = SUM('sales_and_orders'[freight_value])
+		formatString: R$ #,##0
+		displayFolder: Executive KPIs
+		lineageTag: 4516b37a-0161-4c85-8a7c-dc0e9ed4ff04
+
+	measure 'Cancellation Rate' = DIVIDE([Canceled Orders], [Total Orders])
+		formatString: 0.0%
+		displayFolder: Executive KPIs
+		lineageTag: 830f5146-466b-4a3b-8b0f-0c3db477b365
+
 	column date_day
 		dataType: dateTime
 		formatString: Long Date
 		lineageTag: 24fd96ed-fbab-4ee2-abfc-70a030c40b78
 		summarizeBy: none
 		sourceColumn: date_day
-
-		variation Variation
-			isDefault
-			relationship: 47e59107-418c-4dad-a888-934e26df4791
-			defaultHierarchy: LocalDateTable_9cd71377-68f9-43b0-a890-c96ea2ece01c.'Hierarquia de datas'
 
 		annotation SummarizationSetBy = Automatic
 

@@ -1,34 +1,10 @@
-relationship 5c452ad5-fb50-482d-9e14-f5e99c78f90b
-	joinOnDateBehavior: datePartOnly
-	fromColumn: customers_and_payments.order_purchase_timestamp
-	toColumn: LocalDateTable_d1809b19-ef95-4a31-a591-3a1b1d068970.Date
-
-relationship bb66cd96-8d27-40b5-bfce-c278ca6728db
-	joinOnDateBehavior: datePartOnly
-	fromColumn: delivery_and_satisfaction.date_day
-	toColumn: LocalDateTable_89eecda2-074b-4593-9452-93c028b0e406.Date
-
-relationship 2f21384a-9a54-483b-9ea8-97fa864a5efa
-	joinOnDateBehavior: datePartOnly
-	fromColumn: products_and_sellers.shipping_limit_timestamp
-	toColumn: LocalDateTable_e8854bdb-2915-4db2-ab3a-301ac25b0501.Date
-
-relationship 47e59107-418c-4dad-a888-934e26df4791
-	joinOnDateBehavior: datePartOnly
-	fromColumn: sales_and_orders.date_day
-	toColumn: LocalDateTable_9cd71377-68f9-43b0-a890-c96ea2ece01c.Date
-
 relationship 7394c39e-83cc-c83f-8161-4920251131d3
-	crossFilteringBehavior: bothDirections
-	fromCardinality: one
-	fromColumn: dim_dates.date_day
-	toColumn: sales_and_orders.date_day
+	fromColumn: sales_and_orders.date_day
+	toColumn: dim_dates.date_day
 
 relationship d72bf75d-5039-10de-2ce1-01a872903de8
-	crossFilteringBehavior: bothDirections
-	fromCardinality: one
-	fromColumn: dim_dates.date_day
-	toColumn: delivery_and_satisfaction.date_day
+	fromColumn: delivery_and_satisfaction.date_day
+	toColumn: dim_dates.date_day
 
 relationship d321cf53-8457-84fd-76a2-90ae0d99b5b3
 	fromColumn: products_and_sellers.order_purchase_date

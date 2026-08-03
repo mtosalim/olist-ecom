@@ -42,6 +42,15 @@ The source includes data about:
 - customer reviews;
 - geolocation.
 
+## Power BI
+
+![dashboards](powerbi/dashboards/dashboards.png)
+
+- Overview - revenue, orders, items and freight
+- Products & Sellers - category performance, seller reach, item volume and freight economics
+- Delivery & Satisfaction - operational reliability and its relationship with customer reviews
+- Customers & Payments - customer retention, geographic demanda and payment behavior
+
 ## Architecture
 
 ```mermaid
@@ -203,5 +212,5 @@ dbt build --select model_name
 - [x] Complete the Intermediate layer
 - [x] Build dimensional facts and dimensions
 - [x] Add business-level metrics and analyses
-- [ ] Build a Power BI dashboard
-- [ ] Add final architecture and lineage documentation
+- [x] Build a Power BI dashboard
+- [x] Add final architecture and lineage documentation

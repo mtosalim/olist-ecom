@@ -38,6 +38,15 @@ A fonte inclui dados sobre:
 - avaliações de clientes;
 - geolocalização.
 
+## Power BI
+
+![dashboards](powerbi/dashboards/dashboards.png)
+
+- Overview - revenue, orders, items and freight
+- Products & Sellers - category performance, seller reach, item volume and freight economics
+- Delivery & Satisfaction - operational reliability and its relationship with customer reviews
+- Customers & Payments - customer retention, geographic demanda and payment behavior
+
 ## Arquitetura
 
 ```mermaid
@@ -205,6 +214,5 @@ dbt build --select model_name
 - [x] Construir fatos e dimensões
 - [x] Adicionar métricas e modelos orientados a casos de negócio
 - [x] Adicionar testes e documentação dos modelos
-- [ ] Construir o dashboard no Power BI
-- [ ] Adicionar imagens finais da arquitetura, do lineage e do dashboard
-- [ ] Avaliar a inclusão de orquestração com Airflow
+- [x] Construir o dashboard no Power BI
+- [x] Adicionar imagens finais da arquitetura, do lineage e do dashboard

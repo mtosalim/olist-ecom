@@ -1,17 +1,80 @@
 table delivery_and_satisfaction
 	lineageTag: e1a15168-5e2d-4155-8529-bb5196cb835c
 
+	measure 'Delivery Orders' = SUM('delivery_and_satisfaction'[delivered_orders])
+		formatString: #,##0
+		displayFolder: Delivery KPIs
+		lineageTag: a9233e81-8bf9-499b-a6a2-ae733fbf926f
+
+	measure 'On-Time Orders' = SUM('delivery_and_satisfaction'[ontime_orders])
+		formatString: #,##0
+		displayFolder: Delivery KPIs
+		lineageTag: 9a03477d-efa3-40c8-baed-ea3fbad21b0c
+
+	measure 'Late Orders' = SUM('delivery_and_satisfaction'[late_orders])
+		formatString: #,##0
+		displayFolder: Delivery KPIs
+		lineageTag: d098cd16-7781-44f9-b812-57a2178fdee4
+
+	measure 'On-Time Rate' = DIVIDE([On-Time Orders], [Delivery Orders])
+		formatString: 0.0%
+		displayFolder: Delivery KPIs
+		lineageTag: 6fcc8cce-9b0b-440a-bc19-61fba5a895e7
+
+	measure 'Average Late Days' =
+			DIVIDE(
+				SUMX(
+					'delivery_and_satisfaction',
+					'delivery_and_satisfaction'[avg_late_days] * 'delivery_and_satisfaction'[late_orders]
+				),
+				[Late Orders]
+			)
+		formatString: 0.0
+		displayFolder: Delivery KPIs
+		lineageTag: 03047de1-99ae-4132-976a-f372c4dc72a6
+
+	measure 'Average Review Score' =
+			DIVIDE(
+				SUMX(
+					'delivery_and_satisfaction',
+					'delivery_and_satisfaction'[avg_review_delivered_orders] * 'delivery_and_satisfaction'[delivered_orders]
+				),
+				[Delivery Orders]
+			)
+		formatString: 0.00
+		displayFolder: Satisfaction KPIs
+		lineageTag: 5ff873ec-302b-4f04-b4f0-5438720fb464
+
+	measure 'Average Review On-Time' =
+			DIVIDE(
+				SUMX(
+					'delivery_and_satisfaction',
+					'delivery_and_satisfaction'[avg_review_ontime_orders] * 'delivery_and_satisfaction'[ontime_orders]
+				),
+				[On-Time Orders]
+			)
+		formatString: 0.00
+		displayFolder: Satisfaction KPIs
+		lineageTag: 091def34-68cc-40f1-b832-cc2b4a55fb5e
+
+	measure 'Average Review Late' =
+			DIVIDE(
+				SUMX(
+					'delivery_and_satisfaction',
+					'delivery_and_satisfaction'[avg_review_late_orders] * 'delivery_and_satisfaction'[late_orders]
+				),
+				[Late Orders]
+			)
+		formatString: 0.00
+		displayFolder: Satisfaction KPIs
+		lineageTag: 68478967-5a76-4774-9797-80a7902bf26a
+
 	column date_day
 		dataType: dateTime
 		formatString: Long Date
 		lineageTag: b7ed55b6-c93e-4f6b-b353-1e4db149391a
 		summarizeBy: none
 		sourceColumn: date_day
-
-		variation Variation
-			isDefault
-			relationship: bb66cd96-8d27-40b5-bfce-c278ca6728db
-			defaultHierarchy: LocalDateTable_89eecda2-074b-4593-9452-93c028b0e406.'Hierarquia de datas'
 
 		annotation SummarizationSetBy = Automatic
 

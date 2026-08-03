@@ -1,27 +1,22 @@
 model Model
 	culture: pt-BR
 	defaultPowerBIDataSourceVersion: powerBI_V3
-	sourceQueryCulture: pt-BR
+	sourceQueryCulture: en-001
 	dataAccessOptions
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation __PBI_TimeIntelligenceEnabled = 1
+annotation __PBI_TimeIntelligenceEnabled = 0
 
 annotation PBI_QueryOrder = ["customers_and_payments","delivery_and_satisfaction","dim_dates","products_and_sellers","sales_and_orders"]
 
 annotation PBI_ProTooling = ["DevMode"]
 
 ref table customers_and_payments
-ref table DateTableTemplate_db141992-c797-4e61-9de2-e4bd415e4ad4
-ref table LocalDateTable_d1809b19-ef95-4a31-a591-3a1b1d068970
 ref table delivery_and_satisfaction
-ref table LocalDateTable_89eecda2-074b-4593-9452-93c028b0e406
 ref table dim_dates
 ref table products_and_sellers
-ref table LocalDateTable_e8854bdb-2915-4db2-ab3a-301ac25b0501
 ref table sales_and_orders
-ref table LocalDateTable_9cd71377-68f9-43b0-a890-c96ea2ece01c
 
 ref cultureInfo pt-BR
 
