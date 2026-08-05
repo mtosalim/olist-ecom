@@ -12,9 +12,6 @@ The main goal is to learn and design a reliable data pipeline that supports anal
 orders, customers, sellers, products, payments, reviews, delivery performance,
 and revenue.
 
-> **Project status:** In development. The Bronze, Staging, Intermediate, Marts and Business Metrics layers are all
-> complete, Power BI dashboards are currently being built.
-
 ## Project Objectives
 
 - Build a layered ELT pipeline following the Medallion Architecture.

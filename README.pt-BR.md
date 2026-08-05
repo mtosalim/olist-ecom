@@ -9,8 +9,6 @@ Este projeto nasceu do objetivo de aprofundar meus conhecimentos em BigQuery e d
 
 O objetivo principal é projetar um pipeline de dados confiável que ofereça suporte a análises de pedidos, clientes, vendedores, produtos, pagamentos, avaliações, desempenho de entregas e receita.
 
-> **Status do projeto:** Em desenvolvimento. As camadas Bronze, Staging, Intermediate e Marts, incluindo os modelos destinados à visualização, estão concluídas. Todos os modelos e testes declarados passam no `dbt build`. O dashboard no Power BI está em desenvolvimento.
-
 ## Objetivos do projeto
 
 - Construir um pipeline ELT em camadas seguindo a Arquitetura Medalhão.
